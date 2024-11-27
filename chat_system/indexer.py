@@ -114,7 +114,7 @@ class Index:
 class PIndex(Index):
     def __init__(self, name):
         super().__init__(name)
-        roman_int_f = open('/Users/a1163139531/Documents/GitHub/ICDS/chat_system/roman.txt.pk', 'rb')
+        roman_int_f = open('roman.txt.pk', 'rb')
         self.int2roman = pickle.load(roman_int_f)
         roman_int_f.close()
         self.load_poems()
@@ -126,7 +126,7 @@ class PIndex(Index):
         """
         # IMPLEMENTATION
         # ---- start your code ---- #
-        with open("/Users/a1163139531/Documents/GitHub/ICDS/chat_system/AllSonnets.txt", "r") as poems:
+        with open("AllSonnets.txt", "r") as poems:
             for line in poems:
                 self.add_msg_and_index(line)
         # ---- end of your code --- #
