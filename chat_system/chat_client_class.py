@@ -5,6 +5,7 @@ import sys
 import json
 from chat_utils import *
 import client_state_machine as csm
+from GUI import *
 
 import threading
 
@@ -29,22 +30,19 @@ class Client:
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM )
         svr = SERVER if self.args.d == None else (self.args.d, CHAT_PORT)
         self.socket.connect(svr)
-        self.sm = csm.ClientSM(
-            self.socket
-                               )
+        self.sm = csm.ClientSM(self.socket)
         reading_thread = threading.Thread(target=self.read_input)
         reading_thread.daemon = True
         reading_thread.start()
+        self.gui = GUI(self.send, self.recv, self.sm, self.socket)
 
     def shutdown_chat(self):
         return
 
     def send(self, msg):
-        
-        mysend(self.socket,msg)
+        mysend(self.socket, msg)
 
     def recv(self):
-        
         return myrecv(self.socket)
 
     def get_msgs(self):
@@ -82,6 +80,7 @@ class Client:
         else:               # fix: dup is only one of the reasons
            return(False)
 
+
     def read_input(self):
         while True:
             text = sys.stdin.readline()[:-1]
@@ -92,15 +91,15 @@ class Client:
 
     def run_chat(self):
         self.init_chat()
+        self.gui.run()
+        # print("gui is off")
         self.system_msg += 'Welcome to ICS chat\n'
         self.system_msg += 'Please enter your name: '
         self.output()
-        
         while self.login() != True:
             self.output()
         self.system_msg += 'Welcome, ' + self.get_name() + '!'
         self.output()
-        
         while self.sm.get_state() != S_OFFLINE:
             self.proc()
             self.output()
@@ -111,7 +110,5 @@ class Client:
 # main processing loop
 #==============================================================================
     def proc(self):
-        
         my_msg, peer_msg = self.get_msgs()
-        
         self.system_msg += self.sm.proc(my_msg, peer_msg)
