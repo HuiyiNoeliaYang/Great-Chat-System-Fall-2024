@@ -3,7 +3,7 @@ import socket
 import select
 import sys
 import string
-import indexer
+import indexer as indexer
 import json
 import pickle as pkl
 from chat_utils import *

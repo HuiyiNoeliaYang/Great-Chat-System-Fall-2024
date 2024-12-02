@@ -29,7 +29,9 @@ class Client:
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM )
         svr = SERVER if self.args.d == None else (self.args.d, CHAT_PORT)
         self.socket.connect(svr)
-        self.sm = csm.ClientSM(self.socket)
+        self.sm = csm.ClientSM(
+            self.socket
+                               )
         reading_thread = threading.Thread(target=self.read_input)
         reading_thread.daemon = True
         reading_thread.start()
@@ -38,9 +40,11 @@ class Client:
         return
 
     def send(self, msg):
-        mysend(self.socket, msg)
+        
+        mysend(self.socket,msg)
 
     def recv(self):
+        
         return myrecv(self.socket)
 
     def get_msgs(self):
@@ -78,7 +82,6 @@ class Client:
         else:               # fix: dup is only one of the reasons
            return(False)
 
-
     def read_input(self):
         while True:
             text = sys.stdin.readline()[:-1]
@@ -92,10 +95,12 @@ class Client:
         self.system_msg += 'Welcome to ICS chat\n'
         self.system_msg += 'Please enter your name: '
         self.output()
+        
         while self.login() != True:
             self.output()
         self.system_msg += 'Welcome, ' + self.get_name() + '!'
         self.output()
+        
         while self.sm.get_state() != S_OFFLINE:
             self.proc()
             self.output()
@@ -106,5 +111,7 @@ class Client:
 # main processing loop
 #==============================================================================
     def proc(self):
+        
         my_msg, peer_msg = self.get_msgs()
+        
         self.system_msg += self.sm.proc(my_msg, peer_msg)

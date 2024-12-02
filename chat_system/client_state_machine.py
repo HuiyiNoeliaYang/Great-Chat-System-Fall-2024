@@ -1,7 +1,7 @@
 from chat_utils import *
 import json
-
-
+import hashlib
+import base64
 class ClientSM:
     def __init__(self, s):
         self.state = S_OFFLINE
@@ -9,12 +9,15 @@ class ClientSM:
         self.me = ''
         self.out_msg = ''
         self.s = s
+        self.key=''
 
     def set_state(self, state):
         self.state = state
 
     def get_state(self):
         return self.state
+    def get_key(self):
+        return self.key
 
     def set_myname(self, name):
         self.me = name
@@ -69,6 +72,10 @@ class ClientSM:
                     logged_in = json.loads(myrecv(self.s))["results"]
                     self.out_msg += 'Here are all the users in the system:\n'
                     self.out_msg += logged_in
+                    
+                elif my_msg[0] == 'k':
+                    key = my_msg[1:]
+                    self.key = key.strip()
 
                 elif my_msg[0] == 'c':
                     peer = my_msg[1:]
@@ -126,6 +133,9 @@ class ClientSM:
 # ==============================================================================
         elif self.state == S_CHATTING:
             if len(my_msg) > 0:     # my stuff going out
+                #在这加密发送的信息
+                my_msg = encrypt_message(self.key,my_msg)#byte
+                #msg=base64.b64encode(my_msg).decode('utf-8')#str
                 mysend(self.s, json.dumps(
                     {"action": "exchange", "from": "[" + self.me + "]", "message": my_msg}))
                 if my_msg == 'bye':
@@ -138,7 +148,10 @@ class ClientSM:
                 peer_msg = json.loads(peer_msg)
                 # print(peer_msg)
                 if peer_msg["action"] == "exchange":
-                    self.out_msg += peer_msg["from"] + peer_msg["message"]
+                    #msg=base64.b64decode(peer_msg["message"])
+                    message = decrypt_message(self.key, peer_msg["message"])
+                   
+                    self.out_msg += peer_msg["from"] + message
                 elif peer_msg["action"] == "disconnect":
                     self.state = S_LOGGEDIN
                     self.out_msg += "everyone left, you are alone"
