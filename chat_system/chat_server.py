@@ -42,7 +42,7 @@ class Server:
 
                 if msg["action"] == "login":
                     name = msg["name"]
-                    if self.group.is_member(name) != True:
+                    if self .group.is_member(name) != True:
                         # move socket from new clients list to logged clients
                         self.new_clients.remove(sock)
                         # add into the name to sock mapping

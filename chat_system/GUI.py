@@ -38,19 +38,20 @@ class GUI:
         self.pls = Label(self.login, 
                        text = "Please login to continue",
                        justify = CENTER, 
-                       font = "Helvetica 14 bold")
-          
+                       font = "Helvetica 14 bold",
+                       anchor = "center")
+                
         self.pls.place(relheight = 0.15,
-                       relx = 0.2, 
+                       relx = 0.35, 
                        rely = 0.07)
         # create a Label
         self.labelName = Label(self.login,
                                text = "Name: ",
-                               font = "Helvetica 12")
+                               font = "Helvetica 14 bold")
           
         self.labelName.place(relheight = 0.2,
                              relx = 0.1, 
-                             rely = 0.2)
+                             rely = 0.15)
           
         # create a entry box for 
         # tyoing the message
@@ -107,7 +108,7 @@ class GUI:
         self.Window.title("CHATROOM")
         self.Window.resizable(width = False,
                               height = False)
-        self.Window.configure(width = 470,
+        self.Window.configure(width = 665, #195 of them should be the column 
                               height = 550,
                               bg = "#17202A")
         self.labelHead = Label(self.Window,
@@ -117,12 +118,12 @@ class GUI:
                                font = "Helvetica 13 bold",
                                pady = 5)
           
-        self.labelHead.place(relwidth = 1)
+        self.labelHead.place(relwidth = 0.71)
         self.line = Label(self.Window,
                           width = 450,
-                          bg = "#ABB2B9")
+                          bg = "#666e75")
           
-        self.line.place(relwidth = 1,
+        self.line.place(relwidth = 0.71,
                         rely = 0.07,
                         relheight = 0.012)
           
@@ -138,12 +139,53 @@ class GUI:
         self.textCons.place(relheight = 0.745,
                             relwidth = 1, 
                             rely = 0.08)
-          
+        # The column
+        self.sideColumn = Label(self.Window,
+                                bg = "#ABB2B9",
+                                height = 550
+                                )
+        self.sideColumn.place(relwidth = 0.29,
+                              relx = 0.71)
+        
+        #Search Poem in the side column
+        self.entryPoem = Entry(self.Window,
+                              bg = "#2C3E50",
+                              fg = "#EAECEE",
+                              font = "Helvetica 13")       
+    
+        self.entryPoem.place(relwidth = 0.25,
+                            relheight = 0.075,
+                            rely = 0.450,
+                            relx = 0.73)
+        
+        #Search chat history in the side column
+        self.entrySearch = Entry(self.Window,
+                              bg = "#2C3E50",
+                              fg = "#EAECEE",
+                              font = "Helvetica 13")       
+    
+        self.entrySearch.place(relwidth = 0.25,
+                            relheight = 0.075,
+                            rely = 0.294,
+                            relx = 0.73)
+        #Connect with people
+        self.entryPeople = Entry(self.Window,
+                              bg = "#2C3E50",
+                              fg = "#EAECEE",
+                              font = "Helvetica 13")       
+    
+        self.entryPeople.place(relwidth = 0.25,
+                            relheight = 0.075,
+                            rely = 0.14,
+                            relx = 0.73)
+
+        
+        # The label bottom  
         self.labelBottom = Label(self.Window,
-                                 bg = "#ABB2B9",
+                                 bg = "#8898a8",
                                  height = 80)
           
-        self.labelBottom.place(relwidth = 1,
+        self.labelBottom.place(relwidth = 0.71,
                                rely = 0.825)
           
         self.entryMsg = Entry(self.labelBottom,
@@ -169,36 +211,76 @@ class GUI:
                                 bg = "#ABB2B9",
                                 command = lambda : self.sendButton(self.entryMsg.get()))
           
-        self.buttonMsg.place(relx = 0.77,
+        self.buttonMsg.place(relx = 0.78,
                              rely = 0.008,
-                             relheight = 0.02, 
-                             relwidth = 0.11)
+                             relheight = 0.06, 
+                             relwidth = 0.20)
         # create a time button
-        self.time = Button(self.labelBottom,
-                                text = "Time",
+        self.time = Button(self.sideColumn,
+                                text = "Time?",
+                                relief="flat",
                                 font = "Helvetica 10 bold", 
-                                width = 10,
-                                height = 2,
+                                width = 20,
+                                height = 4,
                                 bg = "#ABB2B9",
                                 command = lambda : self.timeButton())
           
-        self.time.place(relx = 0.885,
-                             rely = 0.008,
-                             relheight = 0.02, 
-                             relwidth = 0.11)
+        self.time.place(relx = 0.6,
+                             rely = 0.001,
+                             relheight = 0.004, 
+                             relwidth = 0.3)
         # create a who button
-        self.who = Button(self.labelBottom,
-                                text = "Who",
+        self.who = Button(self.sideColumn,
+                                text = "Who?",
                                 font = "Helvetica 10 bold", 
                                 width = 10,
                                 height = 2,
                                 bg = "#ABB2B9",
                                 command = lambda : self.whoButton())
           
-        self.who.place(relx = 0.77,
-                             rely = 0.038,
-                             relheight = 0.02, 
-                             relwidth = 0.11)
+        self.who.place(relx = 0.1,
+                             rely = 0.001,
+                             relheight = 0.004, 
+                             relwidth = 0.3)
+        # create a poem sending button
+        self.poem = Button(self.sideColumn,
+                                text = "Search Poem",
+                                font = "Helvetica 10 bold", 
+                                width = 100,
+                                height = 2,
+                                bg = "#ABB2B9",
+                                command = lambda : self.poemButton())
+          
+        self.poem.place(relx = 0.1,
+                             rely = 0.034,
+                             relheight = 0.003, 
+                             relwidth = 0.8)
+        # create a search history button
+        self.search = Button(self.sideColumn,
+                                text = "Search Chat History",
+                                font = "Helvetica 10 bold", 
+                                width = 10,
+                                height = 2,
+                                bg = "#ABB2B9",
+                                command = lambda : self.searchButton()) #!!!!! Don't forget to change it
+          
+        self.search.place(relx = 0.1,
+                             rely = 0.024,
+                             relheight = 0.003, 
+                             relwidth = 0.80)
+        # create a connect button
+        self.connect = Button(self.sideColumn,
+                                text = "Connect",
+                                font = "Helvetica 10 bold", 
+                                width = 10,
+                                height = 2,
+                                bg = "#ABB2B9",
+                                command = lambda : self.connectButton()) #!!!!! Don't forget to change it
+          
+        self.connect.place(relx = 0.1,
+                             rely = 0.014,
+                             relheight = 0.003, 
+                             relwidth = 0.80)
           
         self.textCons.config(cursor = "arrow")
           
@@ -224,7 +306,24 @@ class GUI:
     # function to send the time
     def timeButton(self):  
         self.my_msg = "time"
+
+    # Function to send the Poem
+    def poemButton(self):
+        user_input = self.entryPoem.get()
+        self.my_msg = 'p' + user_input
+        self.entryPoem.delete(0, END)
     
+    # Function to send the search history key word
+    def searchButton(self):
+        user_input = self.entrySearch.get()
+        self.my_msg = '? ' + user_input
+        self.entrySearch.delete(0, END)
+    # Function to send the people to be connected
+    def connectButton(self):
+        user_input = self.entryPeople.get()
+        self.my_msg = 'c ' + user_input
+        self.entryPeople.delete(0, END)
+
     # function to send the people who are online
     def whoButton(self):  
         self.my_msg = "who"
